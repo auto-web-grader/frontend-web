@@ -26,9 +26,12 @@
     "next": "^14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
+    "react-hook-form": "^7.53.0",
     "react-icons": "^4.12.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
+    "yet-another-react-lightbox": "^3.21.4",
     "zod": "^3.22.4"
   },
   "devDependencies": {
