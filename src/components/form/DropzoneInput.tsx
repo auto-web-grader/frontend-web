@@ -11,11 +11,11 @@ import { GoUpload } from 'react-icons/go';
 
 import clsxm from '@/lib/clsxm';
 
-import Button from '@/components/buttons/Button';
 import ErrorMessage from '@/components/form/ErrorMessage';
 import FilePreview from '@/components/form/FilePreview';
 import HelperText from '@/components/form/HelperText';
 import Typography from '@/components/Typography';
+import { Button } from '@/components/ui/button';
 
 import { FileWithPreview } from '@/types/form/dropzone';
 
@@ -39,8 +39,8 @@ export default function DropzoneInput({
   helperText,
   hideError = false,
   validation,
-  accept = { 'image/*': ['.jpg', '.jpeg', '.png'] },
-  acceptTypes = 'JPG, JPEG, atau PNG',
+  accept = { 'application/zip': ['.zip'] },
+  acceptTypes = '.zip',
   maxFiles = 1,
   className,
 }: DropzoneInputProps) {
@@ -133,7 +133,7 @@ export default function DropzoneInput({
     onDrop,
     accept,
     maxFiles,
-    maxSize: 1000000,
+    maxSize: 10000009,
   });
 
   return (
@@ -194,7 +194,8 @@ export default function DropzoneInput({
                       Letakkan file disini!
                     </Typography>
 
-                    <Button leftIcon={AiOutlinePlus}>
+                    <Button>
+                      <AiOutlinePlus className='mr-2 w-4 h-4' />
                       <Typography variant='btn' className='text-neutral-10'>
                         Tambahkan File
                       </Typography>
@@ -225,13 +226,14 @@ export default function DropzoneInput({
                     className
                   )}
                 >
-                  <div className='flex flex-col items-center gap-5'>
+                  <div className='flex flex-col items-center gap-2 py-2'>
                     <GoUpload className='w-8 h-8 text-neutral-70' />
                     <Typography className='text-center text-neutral-70 text-sm'>
                       Letakkan file disini!
                     </Typography>
 
-                    <Button leftIcon={AiOutlinePlus}>
+                    <Button>
+                      <AiOutlinePlus className='mr-2 w-4 h-4' />
                       <Typography variant='btn' className='text-neutral-10'>
                         Tambahkan File
                       </Typography>
@@ -241,15 +243,11 @@ export default function DropzoneInput({
 
                 <Typography
                   variant='c'
-                  className='text-neutral-70 text-xs md:text-base'
+                  className='text-neutral-70 text-xs mt-2 md:text-base'
                 >
                   Format file {acceptTypes}
                 </Typography>
-                {!error && helperText && (
-                  <HelperText helperTextClassName='mt-3'>
-                    {helperText}
-                  </HelperText>
-                )}
+                {!error && helperText && <HelperText>{helperText}</HelperText>}
               </>
             )}
           </div>

@@ -1,19 +1,18 @@
-import 'yet-another-react-lightbox/styles.css';
-
 import * as React from 'react';
 import { IoClose } from 'react-icons/io5';
-import Lightbox from 'yet-another-react-lightbox';
-import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 
-import IconButton from '@/components/buttons/IconButton';
+import 'yet-another-react-lightbox/styles.css';
+
 import Typography from '@/components/Typography';
+import { Button } from '@/components/ui/button';
+
 import { FileWithPreview } from '@/types/form/dropzone';
 
 type FilePreviewProps = {
   file: FileWithPreview;
   deleteFile?: (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    file: FileWithPreview,
+    file: FileWithPreview
   ) => void;
   readOnly?: boolean;
 };
@@ -28,13 +27,9 @@ export default function FilePreview({
     deleteFile?.(e, file);
   };
 
-  const [isOpen, setIsOpen] = React.useState(false);
-
   const fileSizeInBytes = file.size;
   const fileSizeInKB = fileSizeInBytes / 1024;
   const fileSizeInMB = fileSizeInKB / 1024;
-
-  const zoomRef = React.useRef(null);
 
   return (
     <>
@@ -52,33 +47,24 @@ export default function FilePreview({
           </Typography>
 
           <Typography variant='c' weight='regular' className=' text-neutral-70'>
-            {'('}
+            (
             {fileSizeInMB < 1
-              ? `${fileSizeInMB.toFixed(2)}`
+              ? `${fileSizeInMB.toFixed(5)}`
               : fileSizeInMB.toFixed(2)}
-            mb{')'}
+            mb)
           </Typography>
         </div>
 
         {!readOnly && (
-          <IconButton
-            icon={IoClose}
+          <Button
+            variant='outline'
+            size='icon'
             onClick={handleDelete}
-            iconClassName='text-neutral-70'
-          />
+            className='text-neutral-70'
+          >
+            <IoClose className='h-4 w-4' />
+          </Button>
         )}
-
-        <Lightbox
-          open={isOpen}
-          slides={[{ src: file.preview }]}
-          render={{
-            buttonPrev: () => null,
-            buttonNext: () => null,
-          }}
-          plugins={[Zoom]}
-          zoom={{ ref: zoomRef }}
-          close={() => setIsOpen(false)}
-        />
       </li>
       <Typography
         variant='bt'

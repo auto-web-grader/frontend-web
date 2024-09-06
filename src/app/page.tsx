@@ -1,3 +1,4 @@
+'use client';
 import clsxm from '@/lib/clsxm';
 import { cn } from '@/lib/utils';
 
@@ -19,6 +20,16 @@ export default function Home() {
       nama: 'Lionel Messi',
       upload_date: '2024-06-04 18:09:20',
       score: 3,
+    },
+    {
+      nama: 'Cristiano Ronaldo',
+      upload_date: '2024-06-04 18:09:20',
+      score: 5,
+    },
+    {
+      nama: 'Kylian Mbappe',
+      upload_date: '2024-06-04 18:09:20',
+      score: 7,
     },
   ];
   return (

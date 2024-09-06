@@ -6,6 +6,7 @@ import '@/styles/globals.css';
 import '@/styles/colors.css';
 
 import Navbar from '@/components/Navbar';
+import { Toaster } from '@/components/ui/toaster';
 
 import { siteConfig } from '@/constant/config';
 
@@ -52,8 +53,11 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        <Navbar />
-        {children}
+        <main className='bg-slate-100 scroll-smooth container relative'>
+          <Navbar />
+          {children}
+          <Toaster />
+        </main>
       </body>
     </html>
   );
