@@ -1,10 +1,14 @@
-/* eslint-disable no-console */
+'use client';
+import { useMutation } from '@tanstack/react-query';
 import { UploadIcon } from 'lucide-react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 
+import api from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
 
+import Buttons from '@/components/buttons/Button';
 import DropzoneInput from '@/components/form/DropzoneInput';
+import Typography from '@/components/Typography';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -21,25 +25,44 @@ type SandboxForm = {
 
 export function UploadFileModal() {
   const { toast } = useToast();
+
   const methods = useForm<SandboxForm>({
     mode: 'onTouched',
   });
   const { handleSubmit } = methods;
 
-  const onSubmit: SubmitHandler<SandboxForm> = (data) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { mutate: handleUpload, isPending } = useMutation<
+    void,
+    unknown,
+    FormData
+  >({
+    mutationFn: async (data) => {
+      const res = await api.post('/send', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      if (res.status == 200) {
+        toast({
+          title: 'File uploaded successfully',
+          typeof: 'success',
+        });
+      }
+    },
+  });
+
+  const onSubmit: SubmitHandler<SandboxForm> = async (data) => {
     if (data.submission && data.submission[0].type !== 'application/zip') {
+      // eslint-disable-next-line no-console
       console.error('Only .zip files are allowed');
       return;
     }
 
     // Log the file data (e.g., file name)
-    toast({
-      description: 'Success sending file',
-      variant: 'success',
-    });
-    console.log('Submitted file:', data.submission[0]);
-
-    // Handle file submission logic here (e.g., upload)
+    const formData = new FormData();
+    formData.append('file', data.submission[0]);
+    handleUpload(formData);
   };
 
   return (
@@ -72,9 +95,15 @@ export function UploadFileModal() {
               <div className='grid grid-cols-4 items-center gap-4'></div>
             </div>
             <DialogFooter>
-              <Button type='submit'>
-                <UploadIcon className='mr-2 h-4 w-4' /> Upload File
-              </Button>
+              <Buttons
+                isLoading={isPending}
+                leftIcon={UploadIcon}
+                className='mr-2'
+                variant='dark'
+                type='submit'
+              >
+                <Typography variant='h6'>Upload</Typography>
+              </Buttons>
             </DialogFooter>
           </form>
         </FormProvider>

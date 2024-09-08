@@ -8,6 +8,7 @@ import '@/styles/colors.css';
 import Navbar from '@/components/Navbar';
 import { Toaster } from '@/components/ui/toaster';
 
+import Providers from '@/app/Providers';
 import { siteConfig } from '@/constant/config';
 
 // !STARTERCONF Change these default meta
@@ -53,11 +54,13 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        <main className='bg-slate-100 scroll-smooth container relative'>
-          <Navbar />
-          {children}
-          <Toaster />
-        </main>
+        <Providers>
+          <main className='bg-slate-100 scroll-smooth container relative'>
+            <Navbar />
+            {children}
+            <Toaster />
+          </main>
+        </Providers>
       </body>
     </html>
   );

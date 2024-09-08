@@ -1,4 +1,8 @@
 'use client';
+
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+
 import clsxm from '@/lib/clsxm';
 import { cn } from '@/lib/utils';
 
@@ -14,24 +18,18 @@ import {
 } from '@/components/ui/table';
 import { UploadFileModal } from '@/components/UploadFileModal';
 
+import { fetchProps } from '@/types/main';
+
 export default function Home() {
-  const data = [
-    {
-      nama: 'Lionel Messi',
-      upload_date: '2024-06-04 18:09:20',
-      score: 3,
-    },
-    {
-      nama: 'Cristiano Ronaldo',
-      upload_date: '2024-06-04 18:09:20',
-      score: 5,
-    },
-    {
-      nama: 'Kylian Mbappe',
-      upload_date: '2024-06-04 18:09:20',
-      score: 7,
-    },
-  ];
+  const [data, setData] = useState<fetchProps[]>([]);
+  const fetchData = async () => {
+    await axios.get('http://localhost:4000/').then((response) => {
+      setData(response.data);
+    });
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <DashboardLayout>
       <section className='p-8'>
@@ -61,17 +59,19 @@ export default function Home() {
           </TableHeader>
           <TableBody>
             {data.map((d) => (
-              <TableRow key={d.nama}>
-                <TableCell className='font-medium'>{d.nama}</TableCell>
+              <TableRow key={d.id}>
+                <TableCell className='font-medium'>{d.author.name}</TableCell>
                 <TableCell>
                   <Typography
                     variant='p2'
                     className={clsxm('bg-slate-300 w-fit py-1 px-2 rounded-sm')}
                   >
-                    {d.upload_date}
+                    {d.submitTime}
                   </Typography>
                 </TableCell>
-                <TableCell>{d.score}/7</TableCell>
+                <TableCell>
+                  {d.correctTests}/{d.totalTests}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
