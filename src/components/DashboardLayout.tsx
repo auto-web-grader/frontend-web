@@ -22,7 +22,7 @@ export default function DashboardLayout({
             'rounded-2xl z-30'
           )}
         >
-          <main tabIndex={-1}>{children}</main>
+          <section tabIndex={-1}>{children}</section>
         </section>
       </div>
     </div>

@@ -74,7 +74,7 @@ export function UploadFileModal() {
   >({
     mutationFn: async (data) => {
       try {
-        const res = await api.post('/send', data, {
+        const res = await api.post('/upload', data, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -86,8 +86,12 @@ export function UploadFileModal() {
           });
           window.location.reload();
         }
-      } catch (error) {
-        toast({ title: 'Upload failed', typeof: 'error' });
+      } catch (error: any) {
+        toast({
+          title: 'Upload failed',
+          description: error.message,
+          variant: 'destructive',
+        });
       }
     },
   });
@@ -101,7 +105,10 @@ export function UploadFileModal() {
     if (!selectedType) {
       // eslint-disable-next-line no-console
       console.error('Type is undefined or null');
-      toast({ title: 'Select submission type', typeof: 'error' });
+      toast({
+        title: 'Please select submission type!',
+        variant: 'destructive',
+      });
       return;
     }
     // eslint-disable-next-line no-console
@@ -150,8 +157,8 @@ export function UploadFileModal() {
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Type</SelectLabel>
-                      <SelectItem value='1'>Reverse String</SelectItem>
-                      <SelectItem value='2'>Website</SelectItem>
+                      <SelectItem value='1'>Website</SelectItem>
+                      <SelectItem value='2'>Reverse String</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>

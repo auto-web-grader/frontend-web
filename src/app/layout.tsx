@@ -56,10 +56,8 @@ export default function RootLayout({
       <body className='container bg-slate-100 '>
         <Providers>
           <Navbar />
-          <main>
-            {children}
-            <Toaster />
-          </main>
+          {children}
+          <Toaster />
         </Providers>
       </body>
     </html>
