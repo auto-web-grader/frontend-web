@@ -14,7 +14,7 @@ import { siteConfig } from '@/constant/config';
 // !STARTERCONF Change these default meta
 // !STARTERCONF Look at @/constant/config to change them
 export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
+  // metadataBase: new URL(siteConfig.url),
   title: {
     default: siteConfig.title,
     template: `%s | ${siteConfig.title}`,
@@ -53,10 +53,10 @@ export default function RootLayout({
 }) {
   return (
     <html>
-      <body>
+      <body className='container bg-slate-100 '>
         <Providers>
-          <main className='bg-slate-100 scroll-smooth container relative'>
-            <Navbar />
+          <Navbar />
+          <main>
             {children}
             <Toaster />
           </main>

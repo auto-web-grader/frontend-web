@@ -1,10 +1,11 @@
 'use client';
 
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import clsxm from '@/lib/clsxm';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 import DashboardLayout from '@/components/DashboardLayout';
 import Typography from '@/components/Typography';
@@ -21,15 +22,28 @@ import { UploadFileModal } from '@/components/UploadFileModal';
 import { fetchProps } from '@/types/main';
 
 export default function Home() {
+  const { toast } = useToast();
   const [data, setData] = useState<fetchProps[]>([]);
-  const fetchData = async () => {
-    await axios.get('http://localhost:4000/').then((response) => {
+
+  // Memoize fetchData function
+  const fetchData = useCallback(async () => {
+    try {
+      const response = await axios.get('http://localhost:4000/');
       setData(response.data);
-    });
-  };
+      // eslint-disable-next-line no-console
+    } catch (error: any) {
+      toast({
+        description: error.message,
+        title: 'Something went wrong!',
+        variant: 'destructive',
+      });
+    }
+  }, [toast]); // Add toast to dependencies if it's defined in a context or hook
+
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]); // Include fetchData in the dependency array
+
   return (
     <DashboardLayout>
       <section className='p-8'>

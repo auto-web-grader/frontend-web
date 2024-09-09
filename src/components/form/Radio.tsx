@@ -3,8 +3,9 @@ import get from 'lodash.get';
 import * as React from 'react';
 import { RegisterOptions, useFormContext } from 'react-hook-form';
 
-import Typography from '@/components/Typography';
 import clsxm from '@/lib/clsxm';
+
+import Typography from '@/components/Typography';
 
 export type RadioProps = {
   /** Input label */
@@ -58,7 +59,7 @@ export default function Radio({
             'checked:bg-primary-500 checked:hover:bg-primary-600 checked:focus:bg-primary-500 checked:active:bg-primary-700',
             (readOnly || disabled) &&
               'cursor-not-allowed bg-gray-100 disabled:checked:bg-primary-400',
-            error && 'border-danger-400 bg-danger-100',
+            error && 'border-danger-400 bg-danger-100'
           )}
           placeholder={placeholder}
           aria-describedby={name}

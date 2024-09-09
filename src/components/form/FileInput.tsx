@@ -8,12 +8,14 @@ import {
 } from 'react-hook-form';
 import { AiOutlinePlus } from 'react-icons/ai';
 
+import clsxm from '@/lib/clsxm';
+
 import Button from '@/components/buttons/Button';
 import ErrorMessage from '@/components/form/ErrorMessage';
 import FilePreview from '@/components/form/FilePreview';
 import HelperText from '@/components/form/HelperText';
 import Typography from '@/components/Typography';
-import clsxm from '@/lib/clsxm';
+
 import { FileWithPreview } from '@/types/form/dropzone';
 
 export type FileInputProps = {
@@ -56,7 +58,7 @@ export default function FileInput({
   }, [error]);
 
   const [files, setFiles] = React.useState<FileWithPreview[]>(
-    getValues(id) || [],
+    getValues(id) || []
   );
 
   const onDrop = React.useCallback(
@@ -77,13 +79,13 @@ export default function FileInput({
         });
       } else {
         const acceptedFilesPreview = acceptedFiles.map((file: T) =>
-          Object.assign(file, { preview: URL.createObjectURL(file) }),
+          Object.assign(file, { preview: URL.createObjectURL(file) })
         );
 
         setFiles(
           files
             ? [...files, ...acceptedFilesPreview].slice(0, maxFiles)
-            : acceptedFilesPreview,
+            : acceptedFilesPreview
         );
 
         setValue(
@@ -91,13 +93,13 @@ export default function FileInput({
           files
             ? [...files, ...acceptedFiles].slice(0, maxFiles)
             : acceptedFiles,
-          { shouldValidate: true },
+          { shouldValidate: true }
         );
 
         clearErrors(id);
       }
     },
-    [clearErrors, files, id, maxFiles, setError, setValue],
+    [clearErrors, files, id, maxFiles, setError, setValue]
   );
 
   React.useEffect(() => {
@@ -110,7 +112,7 @@ export default function FileInput({
 
   const deleteFile = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    file: FileWithPreview,
+    file: FileWithPreview
   ) => {
     e.preventDefault();
     const newFiles = [...files];
@@ -192,7 +194,7 @@ export default function FileInput({
                     error
                       ? 'border-red group-focus:border-red'
                       : 'group-focus:border-typo-primary group-hover:border-typo-primary',
-                    className,
+                    className
                   )}
                 >
                   <Button leftIcon={AiOutlinePlus}>
@@ -221,7 +223,7 @@ export default function FileInput({
                     error
                       ? 'border-red group-focus:border-red'
                       : 'group-focus:border-typo-primary group-hover:border-typo-primary',
-                    className,
+                    className
                   )}
                 >
                   <Button leftIcon={AiOutlinePlus}>

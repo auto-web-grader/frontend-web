@@ -4,8 +4,9 @@ import { FaCheck } from 'react-icons/fa6';
 import { FiChevronDown, FiX } from 'react-icons/fi';
 import Select, { components, MultiValue, StylesConfig } from 'react-select';
 
-import Typography from '@/components/Typography';
 import clsxm from '@/lib/clsxm';
+
+import Typography from '@/components/Typography';
 
 export type SearchableSelectInputProps = {
   label: string | null;
@@ -72,7 +73,7 @@ export default function SearchableSelectInput({
                     ? field.value?.map(
                         (value: unknown) =>
                           options.find((option) => option.value === value) ??
-                          null,
+                          null
                       )
                     : options.find((opt) => opt.value === field.value) ?? null
                 }
@@ -83,11 +84,11 @@ export default function SearchableSelectInput({
                           selectedOptions as MultiValue<
                             (typeof options)[number]
                           >
-                        ).map((option) => option?.value ?? ''),
+                        ).map((option) => option?.value ?? '')
                       )
                     : field.onChange(
                         (selectedOptions as (typeof options)[number])?.value ??
-                          '',
+                          ''
                       );
                   handleChange?.(selectedOptions.value);
                 }}
