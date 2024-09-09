@@ -3,10 +3,11 @@ import { get, RegisterOptions, useFormContext } from 'react-hook-form';
 import { IconType } from 'react-icons';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
 
+import clsxm from '@/lib/clsxm';
+
 import ErrorMessage from '@/components/form/ErrorMessage';
 import HelperText from '@/components/form/HelperText';
 import Typography from '@/components/Typography';
-import clsxm from '@/lib/clsxm';
 
 export type InputProps = {
   id: string;
@@ -65,7 +66,7 @@ export default function Input({
       <div className='w-full flex relative gap-0'>
         <div
           className={clsxm(
-            'absolute w-full h-full rounded-md ring-1 ring-[#D1D5DC] pointer-events-none',
+            'absolute w-full h-full rounded-md ring-1 ring-[#D1D5DC] pointer-events-none'
           )}
         />
 
@@ -82,7 +83,7 @@ export default function Input({
           className={clsxm(
             'relative w-full rounded-md',
             prefix && 'rounded-l-md',
-            suffix && 'rounded-r-md',
+            suffix && 'rounded-r-md'
           )}
         >
           {LeftIcon && (
@@ -91,7 +92,7 @@ export default function Input({
                 'absolute top-0 left-0 h-full',
                 'flex justify-center items-center pl-2.5',
                 'text-neutral-100 text-lg md:text-xl',
-                leftIconClassName,
+                leftIconClassName
               )}
             >
               <LeftIcon />
@@ -120,7 +121,7 @@ export default function Input({
               prefix && 'rounded-l-none rounded-r-md',
               suffix && 'rounded-r-none rounded-l-md',
               prefix && suffix && 'rounded-none',
-              className,
+              className
             )}
             aria-describedby={id}
             {...rest}
@@ -132,7 +133,7 @@ export default function Input({
                 'absolute bottom-0 right-0 h-full',
                 'flex justify-center items-center pr-2.5',
                 'text-neutral-100 text-lg md:text-xl',
-                rightIconClassName,
+                rightIconClassName
               )}
             >
               <RightIcon />
@@ -145,7 +146,7 @@ export default function Input({
                 'absolute bottom-0 right-0 h-full',
                 'flex justify-center items-center pr-3',
                 'text-neutral-100 text-lg md:text-xl',
-                rightIconClassName,
+                rightIconClassName
               )}
               onClick={() => setShowPassword(!showPassword)}
             >

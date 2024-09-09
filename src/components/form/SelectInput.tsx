@@ -4,9 +4,10 @@ import { FaCheck } from 'react-icons/fa6';
 import { FiChevronDown } from 'react-icons/fi';
 import Select, { components, MultiValue, StylesConfig } from 'react-select';
 
+import clsxm from '@/lib/clsxm';
+
 import HelperText from '@/components/form/HelperText';
 import Typography from '@/components/Typography';
-import clsxm from '@/lib/clsxm';
 
 export type SelectInputProps = {
   id: string;
@@ -101,7 +102,7 @@ export default function SelectInput({
                           selectedOptions as MultiValue<
                             (typeof options)[number]
                           >
-                        ).map((option) => option?.value ?? ''),
+                        ).map((option) => option?.value ?? '')
                       )
                     : field.onChange(selectedOptions);
                   handleChange?.(selectedOptions.value);

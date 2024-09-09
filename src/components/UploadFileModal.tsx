@@ -6,7 +6,6 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import api from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
 
-import Buttons from '@/components/buttons/Button';
 import DropzoneInput from '@/components/form/DropzoneInput';
 import Typography from '@/components/Typography';
 import { Button } from '@/components/ui/button';
@@ -19,6 +18,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
 type SandboxForm = {
   submission: FileList;
 };
@@ -86,24 +95,37 @@ export function UploadFileModal() {
               <div className='p-3 rounded-md shadow-md bg-gray-100'>
                 <DropzoneInput
                   id='submission'
-                  label='Upload your submission'
+                  // label='Upload your submission'
                   validation={{ required: 'Submission must be filled' }}
                   accept={{ 'application/zip': ['.zip'] }}
                   helperText='Maximum file size 10 Mb, and only .zip files are accepted'
                 />
               </div>
-              <div className='grid grid-cols-4 items-center gap-4'></div>
+
+              <div className='items-center gap-4 shadow-md'>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder='Question Type' />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Type</SelectLabel>
+                      <SelectItem value='1'>Reverse String</SelectItem>
+                      <SelectItem value='2'>Website</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
+
             <DialogFooter>
-              <Buttons
-                isLoading={isPending}
-                leftIcon={UploadIcon}
-                className='mr-2'
-                variant='dark'
-                type='submit'
-              >
-                <Typography variant='h6'>Upload</Typography>
-              </Buttons>
+              <Button isLoading={isPending} textLoading='Uploading'>
+                <UploadIcon className='mr-2 w-4 h-4' />
+                <Typography variant='btn' className='text-neutral-10'>
+                  Upload
+                </Typography>
+              </Button>
             </DialogFooter>
           </form>
         </FormProvider>

@@ -1,6 +1,3 @@
-import 'yet-another-react-lightbox/styles.css';
-import 'yet-another-react-lightbox/plugins/captions.css';
-
 import React, { useState } from 'react';
 import { HiOutlineExternalLink } from 'react-icons/hi';
 import Lightbox from 'yet-another-react-lightbox';
@@ -9,6 +6,9 @@ import Counter from 'yet-another-react-lightbox/plugins/counter';
 import Download from 'yet-another-react-lightbox/plugins/download';
 import Fullscreen from 'yet-another-react-lightbox/plugins/fullscreen';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
+
+import 'yet-another-react-lightbox/styles.css';
+import 'yet-another-react-lightbox/plugins/captions.css';
 
 import IconLink from '@/components/links/IconLink';
 import NextImage from '@/components/NextImage';

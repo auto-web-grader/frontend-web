@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 
-import Typography from '@/components/Typography';
 import clsxm from '@/lib/clsxm';
+
+import Typography from '@/components/Typography';
 
 export default function HelperText({
   children,
@@ -16,7 +17,7 @@ export default function HelperText({
         variant='c'
         className={clsxm(
           '!leading-tight text-[#687083] text-sm',
-          helperTextClassName,
+          helperTextClassName
         )}
       >
         {children}
