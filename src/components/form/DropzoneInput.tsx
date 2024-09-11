@@ -39,8 +39,8 @@ export default function DropzoneInput({
   helperText,
   hideError = false,
   validation,
-  accept = { 'application/zip': ['.zip'] },
-  acceptTypes = '.zip',
+  accept = { 'application/zip': ['.zip'], 'text/javascript': ['.js'] },
+  acceptTypes = '.zip .js',
   maxFiles = 1,
   className,
 }: DropzoneInputProps) {
@@ -74,7 +74,7 @@ export default function DropzoneInput({
             rejectedFiles &&
             `${
               rejectedFiles[0].errors[0].code === 'file-too-large'
-                ? 'File tidak boleh lebih dari 1MB'
+                ? 'File tidak boleh lebih dari 5MB'
                 : rejectedFiles[0].errors[0].code === 'file-invalid-type'
                 ? 'Tipe file tidak didukung'
                 : rejectedFiles[0].errors[0].message
@@ -133,7 +133,7 @@ export default function DropzoneInput({
     onDrop,
     accept,
     maxFiles,
-    maxSize: 10000009,
+    maxSize: 5000009,
   });
 
   return (

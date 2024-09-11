@@ -1,6 +1,6 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
-import { UninterceptedApiError } from '@/types/api';
+import { getCookie } from '@/lib/cookies';
 
 // export const baseURL =
 //   process.env.NEXT_PUBLIC_RUN_MODE === 'local'
@@ -22,28 +22,22 @@ export const api = axios.create({
 
 api.defaults.withCredentials = true;
 
+api.interceptors.request.use(async (config) => {
+  const token = await getCookie();
+  if (token) {
+    config.headers.Cookie = `session=${token}`;
+  }
+  return config;
+});
+
 api.interceptors.response.use(
-  (config) => {
+  async (config) => {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    config.headers['Content-Type'] = 'application/json';
     return config;
   },
-  (error: AxiosError<UninterceptedApiError>) => {
-    // parse error
-    if (error.response?.data.message) {
-      return Promise.reject({
-        ...error,
-        response: {
-          ...error.response,
-          data: {
-            ...error.response.data,
-            message:
-              typeof error.response.data.message === 'string'
-                ? error.response.data.message
-                : Object.values(error.response.data.message)[0][0],
-          },
-        },
-      });
-    }
-    return Promise.reject(error);
+  (error) => {
+    Promise.reject(error);
   }
 );
 export default api;

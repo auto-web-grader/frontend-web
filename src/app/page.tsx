@@ -41,7 +41,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]); // Include fetchData in the dependency array
+  }, [fetchData]);
 
   return (
     <DashboardLayout>

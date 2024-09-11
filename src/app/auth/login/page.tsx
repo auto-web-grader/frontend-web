@@ -1,6 +1,8 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -31,6 +33,10 @@ export default function Login() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: 'onTouched',
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   });
 
   const { mutate: handleUpload, isPending } = useMutation<
@@ -40,12 +46,23 @@ export default function Login() {
   >({
     mutationFn: async (data) => {
       try {
-        const response = await api.post('/login', data).then((result) => {
-          // eslint-disable-next-line no-console
-          console.log(result);
-        });
-        return response;
+        const response = await api
+          .post('/login', data)
+          .then((res) => {
+            toast({
+              title: 'Login successful',
+            });
+            redirect('/');
+          })
+          .catch((error) => {
+            toast({
+              title: 'Error',
+              description: error.message,
+              variant: 'destructive',
+            });
+          });
       } catch (error) {
+        console.error(error);
         toast({
           title: 'Error Signed In',
           description: error.message,
@@ -131,7 +148,11 @@ export default function Login() {
             </form>
           </FormProvider>
         </div>
+        <Link href='/'>Hello</Link>
       </div>
     </section>
   );
+}
+function setCookie(token: any) {
+  throw new Error('Function not implemented.');
 }

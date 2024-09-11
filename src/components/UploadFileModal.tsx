@@ -78,6 +78,7 @@ export function UploadFileModal() {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
+          withCredentials: true,
         });
         if (res.status == 200) {
           toast({
@@ -97,24 +98,26 @@ export function UploadFileModal() {
   });
 
   const onSubmit: SubmitHandler<SandboxForm> = async (data) => {
-    if (data.submission && data.submission[0].type !== 'application/zip') {
-      // eslint-disable-next-line no-console
-      console.error('Only .zip files are allowed');
-      return;
-    }
     if (!selectedType) {
-      // eslint-disable-next-line no-console
-      console.error('Type is undefined or null');
       toast({
         title: 'Please select submission type!',
         variant: 'destructive',
       });
       return;
     }
-    // eslint-disable-next-line no-console
-    console.log('data: ', data);
-    // eslint-disable-next-line no-console
-    console.log('type: ', selectedType);
+    const file = data.submission[0];
+    if (
+      (selectedType === 1 && file.type !== 'application/zip') ||
+      (selectedType === 2 && file.type !== 'text/javascript')
+    ) {
+      toast({
+        title: `Only ${
+          selectedType === 1 ? '.zip' : '.js'
+        } files are allowed for the selected type`,
+        variant: 'destructive',
+      });
+      return;
+    }
 
     const formData = new FormData();
     formData.append('file', data.submission[0]);
@@ -134,37 +137,47 @@ export function UploadFileModal() {
             className='flex flex-col justify-center'
           >
             <DialogHeader>
-              <DialogTitle>Upload Zip</DialogTitle>
+              <DialogTitle>Upload File</DialogTitle>
               <DialogDescription>
-                Upload zip that contains the file asked by task
+                Upload file that contains the answer asked by task
               </DialogDescription>
             </DialogHeader>
             <div className='grid gap-4 py-4'>
               <div className='p-3 rounded-md shadow-md bg-gray-100'>
+                <div className='items-center gap-4 shadow-md'>
+                  <Select onValueChange={handleTypeChange}>
+                    <SelectTrigger>
+                      <SelectValue placeholder='Question Type' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Type</SelectLabel>
+                        <SelectItem value='1'>Website</SelectItem>
+                        <SelectItem value='2'>Reverse String</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
                 <DropzoneInput
                   id='submission'
                   validation={{ required: 'Submission must be filled' }}
-                  accept={{ 'application/zip': ['.zip'] }}
-                  helperText='Maximum file size 10 Mb, and only .zip files are accepted'
+                  accept={
+                    selectedType === 1
+                      ? { 'application/zip': ['.zip'] }
+                      : selectedType === 2
+                      ? { 'application/javascript': ['.js'] }
+                      : undefined
+                  }
+                  helperText={`Maximum file size 5 Mb, and only ${
+                    selectedType === 1
+                      ? '.zip files'
+                      : selectedType === 2
+                      ? '.js files'
+                      : ''
+                  } are accepted`}
                 />
               </div>
-
-              <div className='items-center gap-4 shadow-md'>
-                <Select onValueChange={handleTypeChange}>
-                  <SelectTrigger>
-                    <SelectValue placeholder='Question Type' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Type</SelectLabel>
-                      <SelectItem value='1'>Website</SelectItem>
-                      <SelectItem value='2'>Reverse String</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
             </div>
-
             <DialogFooter>
               <Button isLoading={isPending} textLoading='Uploading'>
                 <UploadIcon className='mr-2 w-4 h-4' />
