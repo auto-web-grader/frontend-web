@@ -6,7 +6,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className='w-screen relative min-h-screen bg-primary-surface'>
+    <div className='w-max-screen relative min-h-screen bg-primary-surface'>
       <div
         className={cn(
           'bg-primary-surface',

@@ -1,8 +1,8 @@
 'use client';
 
-import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 
+import api from '@/lib/api';
 import clsxm from '@/lib/clsxm';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
@@ -28,14 +28,13 @@ export default function Home() {
   // Memoize fetchData function
   const fetchData = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:4000/');
+      const response = await api.get('');
       setData(response.data);
-      // eslint-disable-next-line no-console
-    } catch (error: any) {
+    } catch (error) {
       toast({
-        description: error.message,
-        title: 'Something went wrong!',
         variant: 'destructive',
+        title: 'Something went wrong!',
+        description: error.message,
       });
     }
   }, [toast]); // Add toast to dependencies if it's defined in a context or hook

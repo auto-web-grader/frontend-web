@@ -17,11 +17,10 @@ export const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-
-  withCredentials: false,
+  withCredentials: true,
 });
 
-api.defaults.withCredentials = false;
+api.defaults.withCredentials = true;
 
 api.interceptors.response.use(
   (config) => {

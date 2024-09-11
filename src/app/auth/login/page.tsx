@@ -1,10 +1,68 @@
+'use client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { FormProvider, useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import api from '@/lib/api';
+import { toast } from '@/hooks/use-toast';
+
 import Typography from '@/components/Typography';
 import { Button } from '@/components/ui/button';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
+type FormData = {
+  email: string;
+  password: string;
+};
+
+const formSchema = z.object({
+  email: z.string().email('Invalid email'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
+});
+
 export default function Login() {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    mode: 'onTouched',
+  });
+
+  const { mutate: handleUpload, isPending } = useMutation<
+    void,
+    unknown,
+    FormData
+  >({
+    mutationFn: async (data) => {
+      try {
+        const response = await api.post('/login', data).then((result) => {
+          // eslint-disable-next-line no-console
+          console.log(result);
+        });
+        return response;
+      } catch (error) {
+        toast({
+          title: 'Error Signed In',
+          description: error.message,
+          variant: 'destructive',
+        });
+      }
+    },
+  });
+
+  function onSubmitHandler(data: z.infer<typeof formSchema>) {
+    const dataForm = new FormData();
+    dataForm.append('email', data.email);
+    dataForm.append('password', data.password);
+    handleUpload(dataForm);
+  }
   return (
-    <section className='bg-slate-500 h-full w-screen flex flex-col lg:flex-row'>
+    <section className='bg-slate-500 h-full w-max-screen flex flex-col lg:flex-row'>
       <div className='bg-neutral-100 w-full lg:w-[40%] h-screen py-20 flex flex-col justify-center items-center'>
         <div className='w-[315px] md:w-[420px] lg:w-full [@media(max-width:350px)]:w-[250px] lg:px-14 xl:px-24'>
           <div className='space-y-3'>
@@ -15,36 +73,63 @@ export default function Login() {
               Silahkan masukkan data diri anda
             </Typography>
           </div>
-          {/* <FormProvider {...methods}> */}
-          {/* <form */}
-          {/* onSubmit={handleSubmit(onSubmit)} */}
-          {/* className='mt-8 lg:mt-12 space-y-4' */}
-          {/* > */}
-          <div className='grid w-full max-w-sm items-center gap-1.5 my-2'>
-            <Input id='email' placeholder='Masukkan email' type='email' />
-          </div>
-          <div className='grid w-full max-w-sm items-center gap-1.5 my-2'>
-            <Input
-              id='password'
-              placeholder='Masukkan password'
-              type='password'
-            />
-          </div>
-          <div className='grid w-full max-w-sm items-center gap-1.5 my-4'>
-            <Button
-              type='submit'
-              size='lg'
-              isLoading={false}
-              className='w-full py-3'
+          <FormProvider {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmitHandler)}
+              className='mt-8 lg:mt-12 space-y-4'
             >
-              <Typography variant='btn' weight='semibold'>
-                Masuk
-              </Typography>
-            </Button>
-          </div>
-
-          {/* </form> */}
-          {/* </FormProvider> */}
+              <div className='grid w-full max-w-sm items-center gap-1.5 my-2'>
+                <FormField
+                  control={form.control}
+                  name='email'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email Address</FormLabel>
+                      <FormControl>
+                        <Input
+                          id='email'
+                          placeholder='Masukkan email'
+                          type='email'
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className='grid w-full max-w-sm items-center gap-1.5 my-2'>
+                <FormField
+                  control={form.control}
+                  name='password'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          id='password'
+                          placeholder='Masukkan password'
+                          type='password'
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className='grid w-full max-w-sm items-center gap-1.5 my-4'>
+                <Button
+                  type='submit'
+                  size='lg'
+                  isLoading={isPending}
+                  className='w-full py-3'
+                >
+                  <Typography variant='btn' weight='semibold'>
+                    Masuk
+                  </Typography>
+                </Button>
+              </div>
+            </form>
+          </FormProvider>
         </div>
       </div>
     </section>
