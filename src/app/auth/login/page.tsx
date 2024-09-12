@@ -2,7 +2,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -30,6 +30,7 @@ const formSchema = z.object({
 });
 
 export default function Login() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: 'onTouched',
@@ -52,7 +53,7 @@ export default function Login() {
             toast({
               title: 'Login successful',
             });
-            redirect('/');
+            router.push('/');
           })
           .catch((error) => {
             toast({

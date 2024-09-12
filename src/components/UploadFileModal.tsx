@@ -36,8 +36,10 @@ type SandboxForm = {
   type: number;
 };
 
+const isClient = typeof window !== 'undefined';
+
 const formSchema = z.object({
-  submission: z.instanceof(FileList),
+  submission: isClient ? z.instanceof(FileList) : z.any(),
   type: z
     .number({
       required_error: 'Please Select Type of Assignment',

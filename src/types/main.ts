@@ -1,8 +1,8 @@
 export type fetchProps = {
   id: number;
+  type: number;
   correctTests: number;
   totalTests: number;
   submitTime: string;
-  authorId: number;
-  author: [name: string, id: number];
+  author: [name: string];
 };

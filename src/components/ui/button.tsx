@@ -65,7 +65,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled}
         {...props}
       >
-        <div className='ml-1.5 flex items-center gap-1'>
+        <div className='mx-1 flex items-center'>
           {isLoading ? <Loader2 className='mr-2 h-4 w-4 animate-spin' /> : null}
           {isLoading && textLoading ? textLoading : children}
         </div>

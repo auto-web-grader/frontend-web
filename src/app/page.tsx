@@ -1,5 +1,6 @@
 'use client';
 
+import { AxiosError } from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 
 import api from '@/lib/api';
@@ -8,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 
 import DashboardLayout from '@/components/DashboardLayout';
+import { GradeModal } from '@/components/GradeModal';
 import Typography from '@/components/Typography';
 import {
   Table,
@@ -25,11 +27,22 @@ export default function Home() {
   const { toast } = useToast();
   const [data, setData] = useState<fetchProps[]>([]);
 
-  // Memoize fetchData function
   const fetchData = useCallback(async () => {
     try {
-      const response = await api.get('');
-      setData(response.data);
+      const response = await api
+        .get('')
+        .then((res) => {
+          return res.data;
+        })
+        .catch((error: AxiosError) => {
+          toast({
+            variant: 'destructive',
+            title: 'Error on making request',
+            description: error.message,
+          });
+          return;
+        });
+      setData(response);
     } catch (error) {
       toast({
         variant: 'destructive',
@@ -48,8 +61,8 @@ export default function Home() {
       <section className='p-8'>
         <div
           className={cn(
-            'flex flex-col lg:flex-row justify-between items-center',
-            'text-center lg:text-left'
+            'flex flex-row justify-between items-center',
+            'text-left'
           )}
         >
           <div className='space-y-1'>
@@ -57,7 +70,7 @@ export default function Home() {
               Data Submission
             </Typography>
           </div>
-          <div className='my-10 lg:my-0'>
+          <div className='my-6 lg:my-0'>
             <UploadFileModal />
           </div>
         </div>
@@ -67,6 +80,7 @@ export default function Home() {
               <TableHead>Nama</TableHead>
               <TableHead>Upload Time</TableHead>
               <TableHead>Score</TableHead>
+              <TableHead>Tipe Soal</TableHead>
               <TableHead>Detail</TableHead>
             </TableRow>
           </TableHeader>
@@ -84,6 +98,18 @@ export default function Home() {
                 </TableCell>
                 <TableCell>
                   {d.correctTests}/{d.totalTests}
+                </TableCell>
+                <TableCell>
+                  {/* if 1 then website if 2 then reverse string */}
+                  <Typography
+                    variant='p2'
+                    className={clsxm('bg-cyan-300 w-fit py-1 px-2 rounded-sm')}
+                  >
+                    {d.type == 1 ? 'Website' : 'Reverse String'}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <GradeModal id={d.id} disabled={d.totalTests != null} />
                 </TableCell>
               </TableRow>
             ))}
