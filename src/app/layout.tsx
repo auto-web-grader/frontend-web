@@ -53,7 +53,7 @@ export default function RootLayout({
 }) {
   return (
     <html>
-      <body className='container bg-slate-100 '>
+      <body className='bg-slate-100 '>
         <Providers>
           <Navbar />
           {children}

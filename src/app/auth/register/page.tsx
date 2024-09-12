@@ -1,4 +1,13 @@
 'use client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import Link from 'next/link';
+import { FormProvider, useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import api from '@/lib/api';
+import { toast } from '@/hooks/use-toast';
+
 import Typography from '@/components/Typography';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,12 +18,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { toast } from '@/hooks/use-toast';
-import api from '@/lib/api';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
-import { FormProvider, useForm } from 'react-hook-form';
-import { z } from 'zod';
 
 type FormData = {
   name: string;
@@ -53,7 +56,7 @@ export default function Register() {
       try {
         const response = await api
           .post('register', data)
-          .then(() => {})
+          .then(() => { })
           .catch((error) => {
             if (error.status == 400) {
               toast({
@@ -121,100 +124,92 @@ export default function Register() {
               onSubmit={form.handleSubmit(onSubmitHandler)}
               className='mt-8 lg:mt-12 space-y-4'
             >
-              <div className='grid w-full max-w-sm items-center gap-1.5 my-2'>
-                <FormField
-                  control={form.control}
-                  name='name'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Masukkan Nama Anda</FormLabel>
-                      <FormControl>
-                        <Input
-                          id='name'
-                          placeholder='Masukkan Nama'
-                          type='text'
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className='grid w-full max-w-sm items-center gap-1.5 my-2'>
-                <FormField
-                  control={form.control}
-                  name='email'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email Address</FormLabel>
-                      <FormControl>
-                        <Input
-                          id='email'
-                          placeholder='Masukkan email'
-                          type='email'
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className='grid w-full max-w-sm items-center gap-1.5 my-2'>
-                <FormField
-                  control={form.control}
-                  name='password'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          id='password'
-                          placeholder='Masukkan password'
-                          type='password'
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className='grid w-full max-w-sm items-center gap-1.5 my-2'>
-                <FormField
-                  control={form.control}
-                  name='passwordRepeated'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Ulangi Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          id='repeatedPassword'
-                          placeholder='Masukkan kembali password'
-                          type='password'
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className='grid w-full max-w-sm items-center gap-1.5 my-4'>
-                <Button
-                  type='submit'
-                  size='lg'
-                  isLoading={isPending}
-                  className='w-full py-3'
-                >
-                  <Typography variant='btn' weight='semibold'>
-                    Buat Akun
-                  </Typography>
-                </Button>
-              </div>
+              <FormField
+                control={form.control}
+                name='name'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Masukkan Nama Anda</FormLabel>
+                    <FormControl>
+                      <Input
+                        id='name'
+                        placeholder='Masukkan Nama'
+                        type='text'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='email'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email Address</FormLabel>
+                    <FormControl>
+                      <Input
+                        id='email'
+                        placeholder='Masukkan email'
+                        type='email'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='password'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        id='password'
+                        placeholder='Masukkan password'
+                        type='password'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='passwordRepeated'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Ulangi Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        id='repeatedPassword'
+                        placeholder='Masukkan kembali password'
+                        type='password'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button
+                type='submit'
+                size='lg'
+                isLoading={isPending}
+                className='w-full py-3'
+              >
+                <Typography variant='btn' weight='semibold'>
+                  Buat Akun
+                </Typography>
+              </Button>
             </form>
+            <div className="w-full flex justify-end mt-2">
+              <Link href='/auth/login'><Typography variant='p3' className='text-blue-500 '>Have accout? Login</Typography></Link>
+            </div>
           </FormProvider>
         </div>
       </div>

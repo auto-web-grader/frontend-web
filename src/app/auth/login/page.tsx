@@ -94,52 +94,48 @@ export default function Login() {
           <FormProvider {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmitHandler)}
-              className='mt-8 lg:mt-12 space-y-4'
-            >
-              <div className='grid w-full max-w-sm items-center gap-1.5 my-2'>
-                <FormField
-                  control={form.control}
-                  name='email'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email Address</FormLabel>
-                      <FormControl>
-                        <Input
-                          id='email'
-                          placeholder='Masukkan email'
-                          type='email'
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className='grid w-full max-w-sm items-center gap-1.5 my-2'>
-                <FormField
-                  control={form.control}
-                  name='password'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          id='password'
-                          placeholder='Masukkan password'
-                          type='password'
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className='grid w-full max-w-sm items-center gap-1.5 my-4'>
+              className='mt-8 lg:mt-12 space-y-2 gap-2'>
+              <FormField
+                control={form.control}
+                name='email'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email Address</FormLabel>
+                    <FormControl>
+                      <Input
+                        id='email'
+                        placeholder='Masukkan email'
+                        type='email'
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='password'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        id='password'
+                        placeholder='Masukkan password'
+                        type='password'
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <div className="mt-5">
+
                 <Button
                   type='submit'
                   size='lg'
                   isLoading={isPending}
-                  className='w-full py-3'
+                  className='w-full py-3 mt-4'
                 >
                   <Typography variant='btn' weight='semibold'>
                     Masuk
@@ -147,11 +143,14 @@ export default function Login() {
                 </Button>
               </div>
             </form>
+            <div className="w-full flex justify-end mt-2">
+              <Link href='/auth/register'><Typography variant='p3' className='text-blue-500 '>Dont have accout? Register</Typography></Link>
+            </div>
           </FormProvider>
         </div>
-        <Link href='/'>Hello</Link>
       </div>
     </section>
+
   );
 }
 function setCookie(token: any) {
