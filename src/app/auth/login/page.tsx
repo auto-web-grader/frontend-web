@@ -16,6 +16,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
@@ -47,9 +48,9 @@ export default function Login() {
   >({
     mutationFn: async (data) => {
       try {
-        const response = await api
+        return await api
           .post('/login', data)
-          .then((res) => {
+          .then(() => {
             toast({
               title: 'Login successful',
             });
@@ -63,7 +64,6 @@ export default function Login() {
             });
           });
       } catch (error) {
-        console.error(error);
         toast({
           title: 'Error Signed In',
           description: error.message,
@@ -94,7 +94,8 @@ export default function Login() {
           <FormProvider {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmitHandler)}
-              className='mt-8 lg:mt-12 space-y-2 gap-2'>
+              className='mt-8 lg:mt-12 space-y-2 gap-2'
+            >
               <FormField
                 control={form.control}
                 name='email'
@@ -109,6 +110,7 @@ export default function Login() {
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -126,16 +128,17 @@ export default function Login() {
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
-              <div className="mt-5">
-
+              <div className='mt-5'>
                 <Button
                   type='submit'
                   size='lg'
                   isLoading={isPending}
                   className='w-full py-3 mt-4'
+                  disabled={isPending}
                 >
                   <Typography variant='btn' weight='semibold'>
                     Masuk
@@ -143,14 +146,17 @@ export default function Login() {
                 </Button>
               </div>
             </form>
-            <div className="w-full flex justify-end mt-2">
-              <Link href='/auth/register'><Typography variant='p3' className='text-blue-500 '>Dont have accout? Register</Typography></Link>
+            <div className='w-full flex justify-end mt-2'>
+              <Link href='/auth/register'>
+                <Typography variant='p3' className='text-blue-500 '>
+                  Dont have accout? Register
+                </Typography>
+              </Link>
             </div>
           </FormProvider>
         </div>
       </div>
     </section>
-
   );
 }
 function setCookie(token: any) {

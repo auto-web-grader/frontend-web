@@ -1,9 +1,8 @@
 'use client';
+import { getCookie } from 'cookies-next';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React from 'react';
-
-import { getCookie } from '@/lib/cookies';
+import React, { useEffect, useState } from 'react';
 
 import { DialogLogout } from '@/components/LogoutDialog';
 import NextImage from '@/components/NextImage';
@@ -14,12 +13,19 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
+} from '@/components/ui/navigation-menu';
 
 const Navbar = () => {
   const pathname = usePathname();
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   const isAuthPage = pathname.startsWith('/auth');
+
+  useEffect(() => {
+    const auth = getCookie('auth_session');
+    setIsAuthenticated(auth != null);
+  }, []);
   return (
     <>
       <div className='w-full h-20 sticky top-0 z-50 border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 '>
@@ -41,24 +47,25 @@ const Navbar = () => {
                 </Link>
               </li>
             </ul>
-            {!isAuthPage && (getCookie() ? (
-              <NavigationMenu className="flex flex-row justify-end">
-                <NavigationMenuList>
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger>Hi! NAMA NAMA NAMA</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="h-max">
-                        <DialogLogout />
-                      </ul>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
-            ) : (
-              <Button>
-                <Link href='/auth/login'>Login</Link>
-              </Button>
-            ))}
+            {!isAuthPage &&
+              (isAuthenticated ? (
+                <NavigationMenu className='flex flex-row justify-end'>
+                  <NavigationMenuList>
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger>Hi!</NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <ul className='h-max'>
+                          <DialogLogout />
+                        </ul>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
+              ) : (
+                <Button>
+                  <Link href='/auth/login'>Login</Link>
+                </Button>
+              ))}
           </div>
         </div>
       </div>

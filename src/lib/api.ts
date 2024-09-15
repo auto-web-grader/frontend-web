@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-import { getCookie } from '@/lib/cookies';
-
 // export const baseURL =
 //   process.env.NEXT_PUBLIC_RUN_MODE === 'local'
 //     ? process.env.NEXT_PUBLIC_BACKEND_URL_LOCAL
@@ -22,13 +20,7 @@ export const api = axios.create({
 
 api.defaults.withCredentials = true;
 
-api.interceptors.request.use(async (config) => {
-  const token = await getCookie();
-  if (token) {
-    config.headers.Cookie = `session=${token}`;
-  }
-  return config;
-});
+// api.interceptors.request.use(async (config) => {});
 
 api.interceptors.response.use(
   async (config) => {

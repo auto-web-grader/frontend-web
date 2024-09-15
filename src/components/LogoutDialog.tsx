@@ -1,4 +1,6 @@
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
+
+import { useToast } from '@/hooks/use-toast';
 
 import {
   AlertDialog,
@@ -10,14 +12,18 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 
 export function DialogLogout() {
   const router = useRouter(); // Initialize useRouter
-
+  const { toast } = useToast();
   const handleLogout = () => {
     // Navigate to the logout route
+    toast({
+      title: 'Logged out',
+      description: 'Successfully Logged Out!',
+    });
     router.push('/auth/logout');
   };
   return (
@@ -37,6 +43,6 @@ export function DialogLogout() {
           <AlertDialogAction onClick={handleLogout}>Continue</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
-    </AlertDialog >
-  )
+    </AlertDialog>
+  );
 }

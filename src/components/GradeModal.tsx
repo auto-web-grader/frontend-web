@@ -29,16 +29,29 @@ export function GradeModal({ id, disabled }: GradeModalProps) {
   >({
     mutationFn: async (data) => {
       try {
-        const res = await api.post(`/grade?id=${id}`, data, {
-          withCredentials: true,
-        });
-        if (res.status == 200) {
-          toast({
-            title: 'Grade Success',
-            variant: 'success',
+        return await api
+          .post(`/grade?id=${id}`, data, {
+            withCredentials: true,
+          })
+          .then((response) => {
+            if (response.status == 200) {
+              toast({
+                title: 'Grade Success',
+                variant: 'success',
+              });
+              window.location.reload();
+            } else {
+              throw new Error('Failed to grade');
+            }
+          })
+          .catch((error) => {
+            toast({
+              title: 'Error',
+              description: error.message,
+              variant: 'destructive',
+            });
+            return;
           });
-          window.location.reload();
-        }
       } catch (error: any) {
         if (error instanceof AxiosError) {
           toast({
@@ -49,7 +62,7 @@ export function GradeModal({ id, disabled }: GradeModalProps) {
         } else {
           toast({
             title: 'Upload failed',
-            description: error.response.data,
+            description: 'Error happening when grading',
             variant: 'destructive',
           });
         }
