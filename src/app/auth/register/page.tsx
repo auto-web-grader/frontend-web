@@ -2,6 +2,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -36,6 +37,8 @@ const formSchema = z.object({
 });
 
 export default function Register() {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: 'onTouched',
@@ -54,9 +57,18 @@ export default function Register() {
   >({
     mutationFn: async (data) => {
       try {
-        const response = await api
+        return await api
           .post('register', data)
-          .then(() => { })
+          .then((res) => {
+            if (res.status == 200) {
+              toast({
+                title: 'Successfully Signed Up',
+                description:
+                  'Sign up is successful, redirecting you to Login Page',
+              });
+              router.push('/auth/login');
+            }
+          })
           .catch((error) => {
             if (error.status == 400) {
               toast({
@@ -207,8 +219,12 @@ export default function Register() {
                 </Typography>
               </Button>
             </form>
-            <div className="w-full flex justify-end mt-2">
-              <Link href='/auth/login'><Typography variant='p3' className='text-blue-500 '>Have accout? Login</Typography></Link>
+            <div className='w-full flex justify-end mt-2'>
+              <Link href='/auth/login'>
+                <Typography variant='p3' className='text-blue-500 '>
+                  Have accout? Login
+                </Typography>
+              </Link>
             </div>
           </FormProvider>
         </div>
