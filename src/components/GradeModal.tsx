@@ -56,7 +56,7 @@ export function GradeModal({ id, disabled }: GradeModalProps) {
         if (error instanceof AxiosError) {
           toast({
             title: 'Server Error',
-            description: error.message,
+            description: error.response?.data?.message || error.message,
             variant: 'destructive',
           });
         } else {

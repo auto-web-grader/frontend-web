@@ -4,5 +4,5 @@ export type fetchProps = {
   correctTests: number;
   totalTests: number;
   submitTime: string;
-  author: [name: string];
+  author: { name: string }[]; // Correctly defining author as an array of objects with a name property
 };
