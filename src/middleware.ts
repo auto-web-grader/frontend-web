@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(req: NextRequest) {
-  const sessionToken = req.cookies.get('session');
+  const sessionToken = req.cookies.get('connect.sid');
   const { pathname } = req.nextUrl;
 
   if (sessionToken && pathname.match('/auth/logout')) {
     const response = NextResponse.redirect(new URL('/auth/login', req.url));
-    response.cookies.delete('session');
+    response.cookies.delete('connect.sid');
     response.cookies.delete('auth_session');
     return response;
   }
