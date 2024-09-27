@@ -20,17 +20,21 @@ import {
 } from '@/components/ui/table';
 
 import { fetchProps } from '@/types/main';
+import withAuth from '@/components/hoc/withAuth';
 
-export default function Admin() {
+export default withAuth(Admin, 'admin');
+function Admin() {
   const { toast } = useToast();
   const [data, setData] = useState<fetchProps[]>([]);
 
   // Fetch data function
   const fetchData = useCallback(async () => {
     try {
-      const response = await api.get('/submission/all').then((res) => {
-        return res.data;
-      });
+      const response = await api
+        .get('/submission/all', { withCredentials: true })
+        .then((res) => {
+          return res.data;
+        });
 
       setData(response.data);
     } catch (error) {

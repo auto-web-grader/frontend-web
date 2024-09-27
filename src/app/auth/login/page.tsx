@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import useAuthStore from '@/store/useAuthStore';
 
 type FormData = {
   email: string;
@@ -41,6 +42,7 @@ export default function Login() {
     },
   });
 
+  const login = useAuthStore.useLogin();
   const { mutate: handleUpload, isPending } = useMutation<
     void,
     unknown,
@@ -49,6 +51,9 @@ export default function Login() {
     mutationFn: async (data) => {
       try {
         const response = await api.post('/auth/login', data);
+        const userData = await api.get('/auth/me', { withCredentials: true });
+
+        login(userData.data.data);
         toast({
           title: 'Login Successfully',
           description: 'You have been logged in successfully',

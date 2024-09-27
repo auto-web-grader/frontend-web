@@ -20,7 +20,6 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/', req.url));
   }
 
-  // Allow the request to proceed
   const response = NextResponse.next();
   if (sessionToken?.value) {
     response.cookies.set('auth_session', sessionToken.value);
