@@ -82,13 +82,11 @@ export function UploadFileModal() {
           },
           withCredentials: true,
         });
-        if (res.status == 200) {
           toast({
             title: 'File uploaded successfully',
             typeof: 'success',
           });
           window.location.reload();
-        }
       } catch (error: any) {
         toast({
           title: 'Upload failed',
