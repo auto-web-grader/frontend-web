@@ -8,6 +8,8 @@ import { DialogFooter } from '@/components/ui/dialog';
 import DropzoneInput from '@/components/form/DropzoneInput';
 import { UploadIcon } from 'lucide-react';
 import { z } from 'zod';
+import { Loader } from 'lucide-react';
+
 import {
   Form,
   FormControl,
@@ -17,10 +19,31 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useForm } from 'react-hook-form';
 import { Textarea } from '@/components/ui/textarea';
+import { useState } from 'react';
+import api from '@/lib/api';
+import axios, { AxiosError } from 'axios';
 
 const formSchema = z.object({
   slope: z.preprocess(
@@ -77,7 +100,7 @@ const formSchema = z.object({
       required_error: 'Prediksi Penjualan wajib diisi.',
       //invalid_type_error: 'Prediksi Penjualan wajib diisi.',
       invalid_type_error:
-        'Prediksi Penjualan wajib diisi. dengan nomor yang valid.',
+        'Prediksi Penjualan wajib diisi dengan nomor yang valid.',
     })
   ),
   recommendation: z.string().min(1, {
@@ -87,6 +110,10 @@ const formSchema = z.object({
 });
 
 export default function Question2() {
+  const [isCardVisible, setIsCardVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [gradingResult, setGradingResult] = useState<string | null>(null);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -101,8 +128,45 @@ export default function Question2() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  const { mutate: handleUpload, isPending } = useMutation<
+    void,
+    unknown,
+    FormData
+  >({
+    mutationFn: async (data) => {
+      try {
+        const response = await api.post('/submission/gradeStatistic', data, {
+          withCredentials: true,
+        });
+        setGradingResult(response.data.message);
+      } catch (error: any) {
+        if (error instanceof AxiosError) {
+          toast({
+            title: 'Server Error',
+            description: error.response?.data?.message || error.message,
+            variant: 'destructive',
+          });
+        } else {
+          toast({
+            title: 'Upload failed',
+            description: 'Error happening when grading',
+            variant: 'destructive',
+          });
+        }
+      }
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsCardVisible(true);
+    setIsLoading(true);
+
+    // simulate grading process
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // set grading result
+    setGradingResult('hasilnya');
+    setIsLoading(false);
   }
 
   return (
@@ -359,7 +423,38 @@ export default function Question2() {
             <Button type='submit'>Submit</Button>
           </form>
         </Form>
+
+        {isCardVisible && (
+          <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm'>
+            <Card className='w-[350px]'>
+              <CardHeader>
+                <CardTitle>Hasil Grading</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {isLoading ? (
+                  <div className='flex justify-center items-center'>
+                    <Loader className='animate-spin' size={24} />
+                  </div>
+                ) : (
+                  <div>{gradingResult}</div>
+                )}
+              </CardContent>
+              <CardFooter className='flex-1'>
+                <Button onClick={() => setIsCardVisible(false)}>Tutup</Button>
+              </CardFooter>
+            </Card>
+          </div>
+        )}
       </section>
     </DashboardLayout>
   );
+}
+function useMutation<T, U, V>(arg0: {
+  mutationFn: (data: any) => Promise<any>;
+}): { mutate: any; isPending: any } {
+  throw new Error('Function not implemented.');
+}
+
+function toast(arg0: { title: string; description: any; variant: string }) {
+  throw new Error('Function not implemented.');
 }
