@@ -76,7 +76,7 @@ export function UploadFileModal() {
   >({
     mutationFn: async (data) => {
       try {
-        const res = await api.post('/upload', data, {
+        const res = await api.post('/submission/upload', data, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -92,7 +92,7 @@ export function UploadFileModal() {
       } catch (error: any) {
         toast({
           title: 'Upload failed',
-          description: error.message,
+          description: error.response?.data?.message || error.message,
           variant: 'destructive',
         });
       }

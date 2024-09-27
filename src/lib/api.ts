@@ -1,4 +1,5 @@
-import axios from 'axios';
+import { UninterceptedApiError } from '@/types/api';
+import axios, { AxiosError } from 'axios';
 
 // export const baseURL =
 //   process.env.NEXT_PUBLIC_RUN_MODE === 'local'
@@ -9,7 +10,7 @@ import axios from 'axios';
 //     ? process.env.NEXT_PUBLIC_BACKEND_URL_PROD
 //     : process.env.NEXT_PUBLIC_BACKEND_URL_LOCAL;
 
-export const baseURL = 'http://localhost:4000/';
+export const baseURL = 'http://localhost:8000/api';
 export const api = axios.create({
   baseURL,
   headers: {
@@ -23,13 +24,27 @@ api.defaults.withCredentials = true;
 // api.interceptors.request.use(async (config) => {});
 
 api.interceptors.response.use(
-  async (config) => {
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    config.headers['Content-Type'] = 'application/json';
+  (config) => {
     return config;
   },
-  (error) => {
-    Promise.reject(error);
+  (error: AxiosError<UninterceptedApiError>) => {
+    // parse error
+    if (error.response?.data.message) {
+      return Promise.reject({
+        ...error,
+        response: {
+          ...error.response,
+          data: {
+            ...error.response.data,
+            message:
+              typeof error.response.data.message === 'string'
+                ? error.response.data.message
+                : Object.values(error.response.data.message)[0][0],
+          },
+        },
+      });
+    }
+    return Promise.reject(error);
   }
 );
 export default api;

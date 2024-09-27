@@ -9,7 +9,6 @@ import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 
 import DashboardLayout from '@/components/DashboardLayout';
-import { GradeModal } from '@/components/GradeModal';
 import Typography from '@/components/Typography';
 import {
   Table,
@@ -30,7 +29,7 @@ export default function Question1() {
   const fetchData = useCallback(async () => {
     try {
       const response = await api
-        .get('')
+        .get('/submission')
         .then((res) => {
           return res.data;
         })
@@ -43,11 +42,11 @@ export default function Question1() {
           return;
         });
       setData(response);
-    } catch (error) {
+    } catch (error: any) {
       toast({
         variant: 'destructive',
         title: 'Something went wrong!',
-        description: error.message,
+        description: error.response?.data?.message || error.message,
       });
     }
   }, [toast]); // Add toast to dependencies if it's defined in a context or hook

@@ -48,25 +48,19 @@ export default function Login() {
   >({
     mutationFn: async (data) => {
       try {
-        return await api
-          .post('/login', data)
-          .then(() => {
-            toast({
-              title: 'Login successful',
-            });
-            router.push('/');
-          })
-          .catch((error) => {
-            toast({
-              title: 'Error',
-              description: error.message,
-              variant: 'destructive',
-            });
+        const response = await api.post('/auth/login', data);
+        if (response.status == 200) {
+          toast({
+            title: 'Login Successfully',
           });
-      } catch (error) {
+          router.push('/');
+        } else {
+          throw new Error('Login Failed');
+        }
+      } catch (error: any) {
         toast({
           title: 'Error Signed In',
-          description: error.message,
+          description: error.response?.data?.message || error.message,
           variant: 'destructive',
         });
       }

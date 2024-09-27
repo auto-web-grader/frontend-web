@@ -58,7 +58,7 @@ export default function Register() {
     mutationFn: async (data) => {
       try {
         return await api
-          .post('register', data)
+          .post('/auth/register', data)
           .then((res) => {
             if (res.status == 200) {
               toast({
@@ -78,20 +78,20 @@ export default function Register() {
               });
               // error to form
               form.setError('password', {
-                message: error.response.data.message,
+                message: error.response.data.errors.name,
               });
               return;
             }
             toast({
               title: 'Error when Sending to API',
-              description: error.message,
+              description: error.response?.data?.message || error.message,
               variant: 'destructive',
             });
           });
-      } catch (error) {
+      } catch (error: any) {
         toast({
           title: 'Error when Signed Up',
-          description: error.message,
+          description: error.response?.data?.message || error.message,
           variant: 'destructive',
         });
       }
