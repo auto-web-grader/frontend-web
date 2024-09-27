@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const sessionToken = req.cookies.get('connect.sid');
   const { pathname } = req.nextUrl;
 
@@ -29,5 +29,11 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/auth/login', '/auth/register', '/auth/logout'], // Define the pages that should trigger the middleware
+  matcher: [
+    '/',
+    '/question-1',
+    '/auth/login',
+    '/auth/register',
+    '/auth/logout',
+  ], // Define the pages that should trigger the middleware
 };

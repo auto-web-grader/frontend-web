@@ -28,31 +28,11 @@ export default function Admin() {
   // Fetch data function
   const fetchData = useCallback(async () => {
     try {
-      // Set dummy data here instead of inside the component directly
-      setData([
-        {
-          id: 1,
-          type: 1,
-          correctTests: 2,
-          totalTests: 3,
-          submitTime: '2022-02-22',
-          author: [{ name: 'Author 1' }],
-        },
-        {
-          id: 2,
-          type: 2,
-          correctTests: 1,
-          totalTests: 3,
-          submitTime: '2022-02-22',
-          author: [{ name: 'Author 2' }],
-        },
-      ]);
-
-      const response = await api.get('').then((res) => {
+      const response = await api.get('/submission/all').then((res) => {
         return res.data;
       });
 
-      setData(response);
+      setData(response.data);
     } catch (error) {
       const errorMessage = (error as AxiosError).message;
       toast({
@@ -78,7 +58,7 @@ export default function Admin() {
         >
           <div className='space-y-1'>
             <Typography variant='h6' as='h6' weight='bold'>
-              You're Admin
+              Admin Page
             </Typography>
           </div>
         </div>
@@ -95,9 +75,7 @@ export default function Admin() {
           <TableBody>
             {data.map((d) => (
               <TableRow key={d.id}>
-                <TableCell className='font-medium'>
-                  {d.author[0]?.name}
-                </TableCell>
+                <TableCell className='font-medium'>{d.user[0]?.name}</TableCell>
                 <TableCell>
                   <Typography
                     variant='p2'
@@ -107,7 +85,7 @@ export default function Admin() {
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  {d.correctTests}/{d.totalTests}
+                  {d.correctAnswer}/{d.totalAnswer}
                 </TableCell>
                 <TableCell>
                   <Typography
@@ -118,7 +96,7 @@ export default function Admin() {
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <GradeModal id={d.id} disabled={d.totalTests != null} />
+                  <GradeModal id={d.id} disabled={d.totalAnswer != null} />
                 </TableCell>
               </TableRow>
             ))}

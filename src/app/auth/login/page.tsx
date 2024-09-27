@@ -49,14 +49,11 @@ export default function Login() {
     mutationFn: async (data) => {
       try {
         const response = await api.post('/auth/login', data);
-        if (response.status == 200) {
-          toast({
-            title: 'Login Successfully',
-          });
-          router.push('/');
-        } else {
-          throw new Error('Login Failed');
-        }
+        toast({
+          title: 'Login Successfully',
+          description: 'You have been logged in successfully',
+        });
+        router.push('/');
       } catch (error: any) {
         toast({
           title: 'Error Signed In',
