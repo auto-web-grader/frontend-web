@@ -1,6 +1,5 @@
 'use client';
 
-import { AxiosError } from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 
 import api from '@/lib/api';
@@ -9,7 +8,6 @@ import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 
 import DashboardLayout from '@/components/DashboardLayout';
-import { GradeModal } from '@/components/GradeModal';
 import Typography from '@/components/Typography';
 import {
   Table,
@@ -29,25 +27,13 @@ export default function Question1() {
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await api
-        .get('')
-        .then((res) => {
-          return res.data;
-        })
-        .catch((error: AxiosError) => {
-          toast({
-            variant: 'destructive',
-            title: 'Error on making request',
-            description: error.message,
-          });
-          return;
-        });
-      setData(response);
-    } catch (error) {
+      const response = await api.get('/submission');
+      setData(response.data.data);
+    } catch (error: any) {
       toast({
         variant: 'destructive',
         title: 'Something went wrong!',
-        description: error.message,
+        description: error.response?.data?.message || error.message,
       });
     }
   }, [toast]); // Add toast to dependencies if it's defined in a context or hook
@@ -86,7 +72,7 @@ export default function Question1() {
           <TableBody>
             {data.map((d) => (
               <TableRow key={d.id}>
-                <TableCell className='font-medium'>{d.author.name}</TableCell>
+                <TableCell className='font-medium'>{d.user.name}</TableCell>
                 <TableCell>
                   <Typography
                     variant='p2'
@@ -96,7 +82,7 @@ export default function Question1() {
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  {d.correctTests}/{d.totalTests}
+                  {d.correctAnswer}/{d.totalAnswer}
                 </TableCell>
                 <TableCell>
                   <Typography

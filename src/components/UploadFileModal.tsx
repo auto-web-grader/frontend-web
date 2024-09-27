@@ -76,23 +76,21 @@ export function UploadFileModal() {
   >({
     mutationFn: async (data) => {
       try {
-        const res = await api.post('/upload', data, {
+        const res = await api.post('/submission/upload', data, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
           withCredentials: true,
         });
-        if (res.status == 200) {
           toast({
             title: 'File uploaded successfully',
             typeof: 'success',
           });
           window.location.reload();
-        }
       } catch (error: any) {
         toast({
           title: 'Upload failed',
-          description: error.message,
+          description: error.response?.data?.message || error.message,
           variant: 'destructive',
         });
       }

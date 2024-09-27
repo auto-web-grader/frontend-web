@@ -1,8 +1,8 @@
 export type fetchProps = {
   id: number;
   type: number;
-  correctTests: number;
-  totalTests: number;
+  correctAnswer: number;
+  totalAnswer: number;
   submitTime: string;
-  author: { name: string }[]; // Correctly defining author as an array of objects with a name property
+  user: { id:number, name: string, email:string }[]; // Correctly defining author as an array of objects with a name property
 };

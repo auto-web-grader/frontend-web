@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 
 import api from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
@@ -30,7 +29,7 @@ export function GradeModal({ id, disabled }: GradeModalProps) {
     mutationFn: async (data) => {
       try {
         return await api
-          .post(`/grade?id=${id}`, data, {
+          .post(`/submission/grade/${id}`, data, {
             withCredentials: true,
           })
           .then((response) => {
@@ -47,25 +46,17 @@ export function GradeModal({ id, disabled }: GradeModalProps) {
           .catch((error) => {
             toast({
               title: 'Error',
-              description: error.message,
+              description: error.response?.data?.message || error.message,
               variant: 'destructive',
             });
             return;
           });
       } catch (error: any) {
-        if (error instanceof AxiosError) {
-          toast({
-            title: 'Server Error',
-            description: error.response?.data?.message || error.message,
-            variant: 'destructive',
-          });
-        } else {
-          toast({
-            title: 'Upload failed',
-            description: 'Error happening when grading',
-            variant: 'destructive',
-          });
-        }
+        toast({
+          title: 'Upload failed',
+          description: error.response?.data?.message || error.message,
+          variant: 'destructive',
+        });
       }
     },
   });
