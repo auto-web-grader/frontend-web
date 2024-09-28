@@ -204,7 +204,7 @@ export default function Question2() {
                   weight='bold'
                   className='text-lg md:text-xl lg:text-2xl' // Adjusting text size
                 >
-                  Submission Question 2
+                  Analisis Data
                 </Typography>
               </div>
             </div>
