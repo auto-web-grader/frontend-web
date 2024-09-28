@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const sessionToken = req.cookies.get('connect.sid');
   const { pathname } = req.nextUrl;
 
   if (sessionToken && pathname.match('/auth/logout')) {
     const response = NextResponse.redirect(new URL('/auth/login', req.url));
+    // const response = NextResponse.next();
     response.cookies.delete('connect.sid');
-    response.cookies.delete('auth_session');
+
     return response;
   }
 
@@ -20,14 +21,17 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/', req.url));
   }
 
-  // Allow the request to proceed
   const response = NextResponse.next();
-  if (sessionToken?.value) {
-    response.cookies.set('auth_session', sessionToken.value);
-    return response;
-  }
+  return response;
 }
 
 export const config = {
-  matcher: ['/', '/auth/login', '/auth/register', '/auth/logout'], // Define the pages that should trigger the middleware
+  matcher: [
+    '/',
+    '/admin',
+    '/question-1',
+    '/auth/login',
+    '/auth/register',
+    '/auth/logout',
+  ], // Define the pages that should trigger the middleware
 };

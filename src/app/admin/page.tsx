@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 
 import DashboardLayout from '@/components/DashboardLayout';
 import { GradeModal } from '@/components/GradeModal';
+import withAuth from '@/components/hoc/withAuth';
 import Typography from '@/components/Typography';
 import {
   Table,
@@ -21,38 +22,21 @@ import {
 
 import { fetchProps } from '@/types/main';
 
-export default function Admin() {
+export default withAuth(Admin, 'admin');
+function Admin() {
   const { toast } = useToast();
   const [data, setData] = useState<fetchProps[]>([]);
 
   // Fetch data function
   const fetchData = useCallback(async () => {
     try {
-      // Set dummy data here instead of inside the component directly
-      setData([
-        {
-          id: 1,
-          type: 1,
-          correctTests: 2,
-          totalTests: 3,
-          submitTime: '2022-02-22',
-          author: [{ name: 'Author 1' }],
-        },
-        {
-          id: 2,
-          type: 2,
-          correctTests: 1,
-          totalTests: 3,
-          submitTime: '2022-02-22',
-          author: [{ name: 'Author 2' }],
-        },
-      ]);
+      const response = await api
+        .get('/submission/all', { withCredentials: true })
+        .then((res) => {
+          return res.data;
+        });
 
-      const response = await api.get('').then((res) => {
-        return res.data;
-      });
-
-      setData(response);
+      setData(response.data);
     } catch (error) {
       const errorMessage = (error as AxiosError).message;
       toast({
@@ -78,7 +62,7 @@ export default function Admin() {
         >
           <div className='space-y-1'>
             <Typography variant='h6' as='h6' weight='bold'>
-              You're Admin
+              Admin Page
             </Typography>
           </div>
         </div>
@@ -95,9 +79,7 @@ export default function Admin() {
           <TableBody>
             {data.map((d) => (
               <TableRow key={d.id}>
-                <TableCell className='font-medium'>
-                  {d.author[0]?.name}
-                </TableCell>
+                <TableCell className='font-medium'>{d.user?.name}</TableCell>
                 <TableCell>
                   <Typography
                     variant='p2'
@@ -107,18 +89,18 @@ export default function Admin() {
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  {d.correctTests}/{d.totalTests}
+                  {d.correctAnswer}/{d.totalAnswer}
                 </TableCell>
                 <TableCell>
                   <Typography
                     variant='p2'
                     className={cn('bg-cyan-300 w-fit py-1 px-2 rounded-sm')}
                   >
-                    {d.type === 1 ? 'Website' : 'Reverse String'}
+                    {d.type == 1 ? 'Website' : 'Reverse String'}
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <GradeModal id={d.id} disabled={d.totalTests != null} />
+                  <GradeModal id={d.id} disabled={d.totalAnswer != null} />
                 </TableCell>
               </TableRow>
             ))}

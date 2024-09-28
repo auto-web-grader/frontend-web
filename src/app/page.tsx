@@ -1,15 +1,18 @@
+'use client';
+import Link from 'next/link';
+
+import withAuth from '@/components/hoc/withAuth';
+import { Button } from '@/components/ui/button';
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 
-export default function Home() {
+export default withAuth(Home, 'user');
+function Home() {
   return (
     <section className='h-[85vh] mx-auto flex justify-center items-center gap-8'>
       <Card className='w-[350px]'>

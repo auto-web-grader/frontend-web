@@ -60,14 +60,12 @@ export default function Register() {
         return await api
           .post('/auth/register', data)
           .then((res) => {
-            if (res.status == 200) {
-              toast({
-                title: 'Successfully Signed Up',
-                description:
-                  'Sign up is successful, redirecting you to Login Page',
-              });
-              router.push('/auth/login');
-            }
+            toast({
+              title: 'Successfully Signed Up',
+              description:
+                'Sign up is successful, redirecting you to Login Page',
+            });
+            router.push('/auth/login');
           })
           .catch((error) => {
             if (error.status == 400) {
