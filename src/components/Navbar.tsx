@@ -1,8 +1,9 @@
 'use client';
-import { getCookie } from 'cookies-next';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+
+import { getItemFromLocalStorage } from '@/lib/getLocalStorage';
 
 import { DialogLogout } from '@/components/LogoutDialog';
 import NextImage from '@/components/NextImage';
@@ -15,17 +16,22 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 
+import { User } from '@/types/entity/user';
+
 const Navbar = () => {
   const pathname = usePathname();
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   const isAuthPage = pathname.startsWith('/auth');
 
+  const [user, setUser] = useState<User | null | undefined>(undefined);
+
   useEffect(() => {
-    const auth = getCookie('auth_session');
-    setIsAuthenticated(auth != null);
+    const userData: User | null | undefined =
+      getItemFromLocalStorage<User>('user');
+    setUser(userData);
   }, []);
+
+  const isAuthenticated = user ? true : false;
   return (
     <>
       <div className='w-full h-20 sticky top-0 z-50 border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 '>
@@ -33,17 +39,24 @@ const Navbar = () => {
           <div className='flex justify-between items-center h-full'>
             <ul className='hidden md:flex gap-x-6 text-dark items-center py-4'>
               <li>
-                <NextImage
+                {/* <NextImage
                   src='/images/logo_jatim.png'
                   alt='Logo Provinsi Jawa Timur'
                   width={40}
                   height={30}
                   priority
+                /> */}
+                <NextImage
+                  src='/images/logo_its.png'
+                  alt='Logo ITS'
+                  width={50}
+                  height={40}
+                  priority
                 />
               </li>
               <li>
                 <Link href='/' className='text-xl font-bold'>
-                  CPNS Jatim
+                  Algoritma Dan Pemrograman ITS
                 </Link>
               </li>
             </ul>
@@ -52,7 +65,10 @@ const Navbar = () => {
                 <NavigationMenu className='flex flex-row justify-end'>
                   <NavigationMenuList>
                     <NavigationMenuItem>
-                      <NavigationMenuTrigger>Hi!</NavigationMenuTrigger>
+                      <NavigationMenuTrigger>
+                        Hi! {user?.name}
+                      </NavigationMenuTrigger>
+
                       <NavigationMenuContent>
                         <ul className='h-max'>
                           <DialogLogout />

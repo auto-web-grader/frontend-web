@@ -70,7 +70,7 @@ export default function FilePreview({
         variant='bt'
         className='flex-1 text-sm truncate text-success-main'
       >
-        File berhasil terunggah.
+        File berhasil terpilih.
       </Typography>
     </>
   );

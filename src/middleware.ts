@@ -6,8 +6,9 @@ export async function middleware(req: NextRequest) {
 
   if (sessionToken && pathname.match('/auth/logout')) {
     const response = NextResponse.redirect(new URL('/auth/login', req.url));
+    // const response = NextResponse.next();
     response.cookies.delete('connect.sid');
-    response.cookies.delete('auth_session');
+
     return response;
   }
 
@@ -21,15 +22,13 @@ export async function middleware(req: NextRequest) {
   }
 
   const response = NextResponse.next();
-  if (sessionToken?.value) {
-    response.cookies.set('auth_session', sessionToken.value);
-    return response;
-  }
+  return response;
 }
 
 export const config = {
   matcher: [
     '/',
+    '/admin',
     '/question-1',
     '/auth/login',
     '/auth/register',

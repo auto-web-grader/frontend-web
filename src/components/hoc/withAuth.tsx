@@ -3,10 +3,12 @@ import { useRouter } from 'next/navigation';
 import * as React from 'react';
 
 import { getToken, removeToken } from '@/lib/cookies';
-import useAuthStore from '@/store/useAuthStore';
-import { User } from '@/types/entity/user';
-import { useToast } from '@/hooks/use-toast';
+
 import Forbidden from '@/components/Forbidden';
+
+import useAuthStore from '@/store/useAuthStore';
+
+import { User } from '@/types/entity/user';
 
 export interface WithAuthProps {
   user: User;

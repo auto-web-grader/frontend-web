@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 
 import DashboardLayout from '@/components/DashboardLayout';
 import { GradeModal } from '@/components/GradeModal';
+import withAuth from '@/components/hoc/withAuth';
 import Typography from '@/components/Typography';
 import {
   Table,
@@ -20,7 +21,6 @@ import {
 } from '@/components/ui/table';
 
 import { fetchProps } from '@/types/main';
-import withAuth from '@/components/hoc/withAuth';
 
 export default withAuth(Admin, 'admin');
 function Admin() {
@@ -79,7 +79,7 @@ function Admin() {
           <TableBody>
             {data.map((d) => (
               <TableRow key={d.id}>
-                <TableCell className='font-medium'>{d.user[0]?.name}</TableCell>
+                <TableCell className='font-medium'>{d.user?.name}</TableCell>
                 <TableCell>
                   <Typography
                     variant='p2'
@@ -96,7 +96,7 @@ function Admin() {
                     variant='p2'
                     className={cn('bg-cyan-300 w-fit py-1 px-2 rounded-sm')}
                   >
-                    {d.type === 1 ? 'Website' : 'Reverse String'}
+                    {d.type == 1 ? 'Website' : 'Reverse String'}
                   </Typography>
                 </TableCell>
                 <TableCell>

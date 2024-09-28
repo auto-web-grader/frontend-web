@@ -78,7 +78,7 @@ export default function Question1() {
                     variant='p2'
                     className={clsxm('bg-slate-300 w-fit py-1 px-2 rounded-sm')}
                   >
-                    {d.submitTime}
+                    {new Date(d.submitTime).toLocaleString('id-ID')}
                   </Typography>
                 </TableCell>
                 <TableCell>

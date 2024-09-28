@@ -1,15 +1,15 @@
 'use client';
+import Link from 'next/link';
+
+import withAuth from '@/components/hoc/withAuth';
+import { Button } from '@/components/ui/button';
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import withAuth from '@/components/hoc/withAuth';
 
 export default withAuth(Home, 'user');
 function Home() {

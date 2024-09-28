@@ -15,15 +15,19 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 
+import useAuthStore from '@/store/useAuthStore';
+
 export function DialogLogout() {
   const router = useRouter(); // Initialize useRouter
   const { toast } = useToast();
+  const logOut = useAuthStore.useLogout();
   const handleLogout = () => {
     // Navigate to the logout route
     toast({
       title: 'Logged out',
       description: 'Successfully Logged Out!',
     });
+    logOut();
     router.push('/auth/logout');
   };
   return (
