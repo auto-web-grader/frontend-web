@@ -1,17 +1,24 @@
 'use client';
 
-import { useMutation } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
-import DashboardLayout from '@/components/DashboardLayout';
-import Typography from '@/components/Typography';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { DialogFooter } from '@/components/ui/dialog';
-import DropzoneInput from '@/components/form/DropzoneInput';
-import { UploadIcon } from 'lucide-react';
-import { z } from 'zod';
+import { useMutation } from '@tanstack/react-query';
 import { Loader } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
+import api from '@/lib/api';
+import { cn } from '@/lib/utils';
+import { toast } from '@/hooks/use-toast';
+
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -21,32 +28,10 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useForm } from 'react-hook-form';
 import { Textarea } from '@/components/ui/textarea';
-import { useState } from 'react';
-import api from '@/lib/api';
-import axios, { AxiosError } from 'axios';
-import { toast } from '@/hooks/use-toast';
+
+const isClient = typeof window !== 'undefined';
 
 const formSchema = z.object({
   slope: z.preprocess(
@@ -93,9 +78,11 @@ const formSchema = z.object({
       }
       return null; // Return null if not a valid FileList or if running server-side
     },
-    z.instanceof(FileList).refine((files) => files && files.length > 0, {
-      message: 'Scatter Plot file is required.', //still not working
-    })
+    isClient
+      ? z.instanceof(FileList).refine((files) => files && files.length > 0, {
+          message: 'Scatter Plot file is required.', //still not working
+        })
+      : z.any()
   ),
   prediction: z.preprocess(
     (val) => (val === '' ? undefined : Number(val)),
@@ -139,41 +126,43 @@ export default function Question2() {
     mutationFn: async (data) => {
       try {
         const response = await api.post('/submission/gradeStatistic', data, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
           withCredentials: true,
         });
         setGradingResult(response.data.message);
       } catch (error: any) {
-        if (error instanceof AxiosError) {
-          toast({
-            title: 'Server Error',
-            description: error.response?.data?.message || error.message,
-            variant: 'destructive',
-          });
-        } else {
-          toast({
-            title: 'Upload failed',
-            description: 'Error happening when grading',
-            variant: 'destructive',
-          });
-        }
+        toast({
+          title: 'Server Error',
+          description: error.response?.data?.message || error.message,
+          variant: 'destructive',
+        });
       }
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsCardVisible(true);
-    setIsLoading(true);
+    setIsLoading(isPending);
 
-    // simulate grading process
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const formData = new FormData();
 
-    // set grading result
-    //setGradingResult('hasilnya');
-    setIsLoading(false);
+    formData.append('file', values.scatter[0]);
+    formData.append('answer1', values.slope.toString());
+    formData.append('answer2', values.intercept.toString());
+    formData.append('answer3', values.rSquared.toString());
+    formData.append('answer4', values.interpretation);
+    formData.append('answer5', values.coefficient.toString());
+    formData.append('answer6', values.prediction.toString());
+    formData.append('answer7', values.recommendation);
+
+    handleUpload(formData);
+
+    setIsLoading(isPending);
   }
 
   return (
-    // <DashboardLayout>
     <div className='w-max-screen relative min-h-screen bg-primary-surface'>
       <div
         className={cn(
@@ -191,24 +180,6 @@ export default function Question2() {
           )}
         >
           <div className='w-full'>
-            <div
-              className={cn(
-                'w-4/5 flex flex-row justify-between items-center',
-                'text-left'
-              )}
-            >
-              <div className='space-y-1'>
-                <Typography
-                  variant='h6'
-                  as='h6'
-                  weight='bold'
-                  className='text-lg md:text-xl lg:text-2xl' // Adjusting text size
-                >
-                  Submission Question 2
-                </Typography>
-              </div>
-            </div>
-            <br />
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -233,11 +204,12 @@ export default function Question2() {
                         <FormControl>
                           <Input
                             placeholder='Isi jawaban'
+                            type='number'
                             {...field}
                             onChange={(e) => {
                               field.onChange(e);
-                              console.log('Slope changed:', e.target.value);
                             }}
+                            value={field.value ?? ''}
                           />
                         </FormControl>
                         <FormMessage className='text-red-500' />
@@ -256,10 +228,11 @@ export default function Question2() {
                           <Input
                             placeholder='Isi jawaban'
                             {...field}
+                            type='number'
                             onChange={(e) => {
                               field.onChange(e);
-                              console.log('Intercept changed:', e.target.value);
                             }}
+                            value={field.value ?? ''}
                           />
                         </FormControl>
                         <FormMessage className='text-red-500' />
@@ -284,10 +257,11 @@ export default function Question2() {
                           <Input
                             placeholder='Isi jawaban'
                             {...field}
+                            type='number'
                             onChange={(e) => {
                               field.onChange(e);
-                              console.log('R-Squared changed:', e.target.value);
                             }}
+                            value={field.value ?? ''}
                           />
                         </FormControl>
                         <FormMessage className='text-red-500' />
@@ -315,11 +289,8 @@ export default function Question2() {
                             {...field}
                             onChange={(e) => {
                               field.onChange(e);
-                              console.log(
-                                'Interpretasi Hasil Regresi changed:',
-                                e.target.value
-                              );
                             }}
+                            value={field.value ?? ''}
                           />
                         </FormControl>
                         <FormMessage className='text-red-500' />
@@ -344,13 +315,11 @@ export default function Question2() {
                           <Input
                             placeholder='Isi jawaban'
                             {...field}
+                            type='number'
                             onChange={(e) => {
                               field.onChange(e);
-                              console.log(
-                                'Coefficient changed:',
-                                e.target.value
-                              );
                             }}
+                            value={field.value ?? ''}
                           />
                         </FormControl>
                         <FormMessage className='text-red-500' />
@@ -379,7 +348,7 @@ export default function Question2() {
                         </FormControl>
                         <FormDescription>
                           Hanya menerima file dengan format .png, .jpg, .jpeg.
-                          Maximum ukuran file 100 MB.
+                          Maximum ukuran file 5 MB.
                         </FormDescription>
                         <FormMessage className='text-red-500' />
                       </>
@@ -403,13 +372,11 @@ export default function Question2() {
                           <Input
                             placeholder='Isi jawaban'
                             {...field}
+                            type='number'
                             onChange={(e) => {
                               field.onChange(e);
-                              console.log(
-                                'Prediksi Penjualan changed:',
-                                e.target.value
-                              );
                             }}
+                            value={field.value ?? ''}
                           />
                         </FormControl>
                         <FormMessage className='text-red-500' />
@@ -437,11 +404,8 @@ export default function Question2() {
                             {...field}
                             onChange={(e) => {
                               field.onChange(e);
-                              console.log(
-                                'Interpretasi dan Rekomendasi Hasil changed:',
-                                e.target.value
-                              );
                             }}
+                            value={field.value ?? ''}
                           />
                         </FormControl>
                         <FormMessage className='text-red-500' />
