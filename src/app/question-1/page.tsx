@@ -53,7 +53,7 @@ export default function Question1() {
         >
           <div className='space-y-1'>
             <Typography variant='h6' as='h6' weight='bold'>
-              Submission Question 1
+              Pranata Komputer
             </Typography>
           </div>
           <div className='my-6 lg:my-0'>
