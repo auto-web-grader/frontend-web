@@ -17,12 +17,9 @@ importers:
       '@radix-ui/react-dialog':
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-<<<<<<< Updated upstream
-=======
       '@radix-ui/react-dropdown-menu':
         specifier: ^2.1.1
         version: 2.1.1(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
->>>>>>> Stashed changes
       '@radix-ui/react-label':
         specifier: ^2.1.0
         version: 2.1.0(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3906,7 +3903,6 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     deprecated: |-
       You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
-
       (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
 
   querystringify@2.2.0:
@@ -6116,8 +6112,6 @@ snapshots:
     optionalDependencies:
       '@types/react': 18.3.7
       '@types/react-dom': 18.3.0
-<<<<<<< Updated upstream
-=======
 
   '@radix-ui/react-dropdown-menu@2.1.1(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -6133,7 +6127,6 @@ snapshots:
     optionalDependencies:
       '@types/react': 18.3.7
       '@types/react-dom': 18.3.0
->>>>>>> Stashed changes
 
   '@radix-ui/react-focus-guards@1.1.0(@types/react@18.3.7)(react@18.3.1)':
     dependencies:
@@ -6168,11 +6161,7 @@ snapshots:
       '@types/react': 18.3.7
       '@types/react-dom': 18.3.0
 
-<<<<<<< Updated upstream
-  '@radix-ui/react-navigation-menu@1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-=======
   '@radix-ui/react-menu@2.1.1(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
->>>>>>> Stashed changes
     dependencies:
       '@radix-ui/primitive': 1.1.0
       '@radix-ui/react-collection': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -6180,9 +6169,6 @@ snapshots:
       '@radix-ui/react-context': 1.1.0(@types/react@18.3.7)(react@18.3.1)
       '@radix-ui/react-direction': 1.1.0(@types/react@18.3.7)(react@18.3.1)
       '@radix-ui/react-dismissable-layer': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-<<<<<<< Updated upstream
-      '@radix-ui/react-id': 1.1.0(@types/react@18.3.7)(react@18.3.1)
-=======
       '@radix-ui/react-focus-guards': 1.1.0(@types/react@18.3.7)(react@18.3.1)
       '@radix-ui/react-focus-scope': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-id': 1.1.0(@types/react@18.3.7)(react@18.3.1)
@@ -6210,7 +6196,6 @@ snapshots:
       '@radix-ui/react-direction': 1.1.0(@types/react@18.3.7)(react@18.3.1)
       '@radix-ui/react-dismissable-layer': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-id': 1.1.0(@types/react@18.3.7)(react@18.3.1)
->>>>>>> Stashed changes
       '@radix-ui/react-presence': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.7)(react@18.3.1)
@@ -6271,23 +6256,13 @@ snapshots:
       '@types/react': 18.3.7
       '@types/react-dom': 18.3.0
 
-<<<<<<< Updated upstream
-  '@radix-ui/react-select@2.1.1(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-=======
   '@radix-ui/react-roving-focus@1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
->>>>>>> Stashed changes
     dependencies:
       '@radix-ui/primitive': 1.1.0
       '@radix-ui/react-collection': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.7)(react@18.3.1)
       '@radix-ui/react-context': 1.1.0(@types/react@18.3.7)(react@18.3.1)
       '@radix-ui/react-direction': 1.1.0(@types/react@18.3.7)(react@18.3.1)
-<<<<<<< Updated upstream
-      '@radix-ui/react-dismissable-layer': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-focus-guards': 1.1.0(@types/react@18.3.7)(react@18.3.1)
-      '@radix-ui/react-focus-scope': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-id': 1.1.0(@types/react@18.3.7)(react@18.3.1)
-=======
       '@radix-ui/react-id': 1.1.0(@types/react@18.3.7)(react@18.3.1)
       '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.7)(react@18.3.1)
@@ -6310,7 +6285,6 @@ snapshots:
       '@radix-ui/react-focus-guards': 1.1.0(@types/react@18.3.7)(react@18.3.1)
       '@radix-ui/react-focus-scope': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-id': 1.1.0(@types/react@18.3.7)(react@18.3.1)
->>>>>>> Stashed changes
       '@radix-ui/react-popper': 1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-portal': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -10152,12 +10126,9 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   zod@3.23.8: {}
-<<<<<<< Updated upstream
 
   zustand@5.0.0-rc.2(@types/react@18.3.7)(immer@10.1.1)(react@18.3.1):
     optionalDependencies:
       '@types/react': 18.3.7
       immer: 10.1.1
       react: 18.3.1
-=======
->>>>>>> Stashed changes

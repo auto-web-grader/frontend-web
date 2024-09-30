@@ -1,15 +1,24 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AxiosError } from 'axios';
+import { Loader } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import api from '@/lib/api';
+import { cn } from '@/lib/utils';
+
 import DashboardLayout from '@/components/DashboardLayout';
 import Typography from '@/components/Typography';
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { DialogFooter } from '@/components/ui/dialog';
-import DropzoneInput from '@/components/form/DropzoneInput';
-import { UploadIcon } from 'lucide-react';
-import { z } from 'zod';
-import { Loader } from 'lucide-react';
-
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -19,31 +28,8 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useForm } from 'react-hook-form';
 import { Textarea } from '@/components/ui/textarea';
-import { useState } from 'react';
-import api from '@/lib/api';
-import axios, { AxiosError } from 'axios';
 
 const formSchema = z.object({
   slope: z.preprocess(

@@ -9,13 +9,6 @@ import { DialogLogout } from '@/components/LogoutDialog';
 import NextImage from '@/components/NextImage';
 import { Button } from '@/components/ui/button';
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu';
-import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
@@ -23,17 +16,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '@/components/ui/navigation-menu';
 
 import { User } from '@/types/entity/user';
 
 const Navbar = () => {
   const router = useRouter(); // Initialize useRouter from next/navigation
   const pathname = usePathname();
-<<<<<<< Updated upstream
-
-=======
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
->>>>>>> Stashed changes
   const isAuthPage = pathname.startsWith('/auth');
 
   const [user, setUser] = useState<User | null | undefined>(undefined);
@@ -44,9 +39,7 @@ const Navbar = () => {
     setUser(userData);
   }, []);
 
-<<<<<<< Updated upstream
   const isAuthenticated = user ? true : false;
-=======
   // Function to handle navigation to the login page
   const handleLoginClick = () => {
     router.push('/auth/login');
@@ -57,7 +50,6 @@ const Navbar = () => {
     router.push(`/question-${type}`);
   };
 
->>>>>>> Stashed changes
   return (
     <>
       <div className='w-full h-20 sticky top-0 z-50 border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 '>
@@ -85,11 +77,7 @@ const Navbar = () => {
               </li>
               <li>
                 <Link href='/' className='text-xl font-bold'>
-<<<<<<< Updated upstream
                   Algoritma Dan Pemrograman ITS
-=======
-                  CPNS Jawa Timur
->>>>>>> Stashed changes
                 </Link>
               </li>
             </ul>
