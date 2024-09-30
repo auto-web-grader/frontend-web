@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import { getItemFromLocalStorage } from '@/lib/getLocalStorage';
@@ -15,12 +15,25 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 import { User } from '@/types/entity/user';
 
 const Navbar = () => {
+  const router = useRouter(); // Initialize useRouter from next/navigation
   const pathname = usePathname();
+<<<<<<< Updated upstream
 
+=======
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+>>>>>>> Stashed changes
   const isAuthPage = pathname.startsWith('/auth');
 
   const [user, setUser] = useState<User | null | undefined>(undefined);
@@ -31,13 +44,29 @@ const Navbar = () => {
     setUser(userData);
   }, []);
 
+<<<<<<< Updated upstream
   const isAuthenticated = user ? true : false;
+=======
+  // Function to handle navigation to the login page
+  const handleLoginClick = () => {
+    router.push('/auth/login');
+  };
+
+  // Function to handle navigation based on question type
+  const handleQuestionTypeClick = (type: number) => {
+    router.push(`/question-${type}`);
+  };
+
+>>>>>>> Stashed changes
   return (
     <>
       <div className='w-full h-20 sticky top-0 z-50 border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 '>
         <div className='container mx-auto px-4 h-full w-[90%]'>
           <div className='flex justify-between items-center h-full'>
-            <ul className='hidden md:flex gap-x-6 text-dark items-center py-4'>
+            <ul
+              className='hidden md:flex gap-x-6 text-dark items-center py-4 '
+              style={{ marginLeft: '0px' }}
+            >
               <li>
                 {/* <NextImage
                   src='/images/logo_jatim.png'
@@ -56,13 +85,20 @@ const Navbar = () => {
               </li>
               <li>
                 <Link href='/' className='text-xl font-bold'>
+<<<<<<< Updated upstream
                   Algoritma Dan Pemrograman ITS
+=======
+                  CPNS Jawa Timur
+>>>>>>> Stashed changes
                 </Link>
               </li>
             </ul>
             {!isAuthPage &&
               (isAuthenticated ? (
-                <NavigationMenu className='flex flex-row justify-end'>
+                <NavigationMenu
+                  className='flex flex-row justify-end'
+                  style={{ marginRight: '0px' }}
+                >
                   <NavigationMenuList>
                     <NavigationMenuItem>
                       <NavigationMenuTrigger>
@@ -78,9 +114,33 @@ const Navbar = () => {
                   </NavigationMenuList>
                 </NavigationMenu>
               ) : (
-                <Button>
-                  <Link href='/auth/login'>Login</Link>
-                </Button>
+                <div
+                  className='flex gap-x-4 items-center'
+                  style={{ marginRight: '0px' }}
+                >
+                  <Button>
+                    <Link href='/auth/login'>Login</Link>
+                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant='outline'>Tipe Soal</Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className='w-56'>
+                      <DropdownMenuLabel>Tipe Soal</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuCheckboxItem
+                        onClick={() => handleQuestionTypeClick(1)}
+                      >
+                        Pranata Komputer
+                      </DropdownMenuCheckboxItem>
+                      <DropdownMenuCheckboxItem
+                        onClick={() => handleQuestionTypeClick(2)}
+                      >
+                        Analisis Data
+                      </DropdownMenuCheckboxItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               ))}
           </div>
         </div>
